@@ -22,6 +22,7 @@ canvas{box-sizing:border-box;display:block;margin:0 auto}#o{position:absolute;le
 html{overflow-x:hidden}
 @keyframes shk{0%{transform:translate(0,0)}5%{transform:translate(-18px,10px)}10%{transform:translate(16px,-12px)}15%{transform:translate(-14px,-10px)}20%{transform:translate(14px,12px)}25%{transform:translate(-11px,8px)}30%{transform:translate(10px,-9px)}40%{transform:translate(-7px,6px)}50%{transform:translate(6px,-5px)}60%{transform:translate(-4px,4px)}70%{transform:translate(3px,-3px)}85%{transform:translate(-2px,2px)}100%{transform:translate(0,0)}}
 body.shk{animation:shk 2.5s linear}
+#fb{display:flex;gap:2px;justify-content:center;align-items:center;margin:0 auto 8px}#fb i{width:20px;height:12px;border-radius:3px;background:var(--btn);border:1px solid var(--line)}#fb i.on{background:#f5a623;border-color:#f5a623}#fb i.hot{background:#e0443e;border-color:#e0443e}
 #hy{display:flex;gap:4px;justify-content:center;align-items:center;margin:0 auto 8px}#hy i{width:34px;height:12px;border-radius:4px;background:var(--btn);border:1px solid var(--line)}#hy i.on{background:#3b9be8;border-color:#3b9be8}
 #lv{display:flex;gap:6px;justify-content:center;margin:6px 0 10px}#lv button{border:0;border-radius:16px;padding:6px 14px;background:var(--btn);color:var(--fg);font-size:.9rem}#lv button.on{background:#e0443e;color:#fff}
 </style></head><body>
@@ -30,6 +31,7 @@ body.shk{animation:shk 2.5s linear}
 <button id="shopb">🛍️ Shop</button><button id="upb">⬆️ Upgrades</button><button id="cvb">🔄 Convert</button>
 <div id="hud"><span>Snacks: <b id="s">0</b></span><span>Distance: <b id="d">0</b> m</span><span>Level: <b id="lev">1</b></span><span>🪙 <b id="co">0</b></span><span>Best: <b id="b">0</b></span></div>
 <div id="hy"><span>💧</span><i></i><i></i><i></i><i></i><i></i></div>
+<div id="fb"><span>🍎</span><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
 <div id="st"><canvas id="c" width="340" height="340"></canvas><canvas id="o" width="340" height="340"></canvas></div>
 <div class="pad"><span></span><button data-d="u">▲</button><span></span><button data-d="l">◀</button><button data-d="d">▼</button><button data-d="r">▶</button></div>
 <p id="msg"></p>
@@ -39,7 +41,7 @@ body.shk{animation:shk 2.5s linear}
 const c=document.getElementById('c'),x=document.getElementById('o').getContext('2d'),W=340,BY=250,TL=70,TR=270;
 const DIRS={u:0,d:0,l:-1,r:1},EM=['🍎','🍕','🍩','🍔','🍌','🧁'];
 const LV={easy:{b:1.2,m:3,r:1500,t:1.2},medium:{b:2,m:6,r:900,t:2},hard:{b:3.5,m:9,r:600,t:3.2}};let lvl='medium';
-const HS=[...document.querySelectorAll('#hy i')];
+const HS=[...document.querySelectorAll('#hy i')],FS=[...document.querySelectorAll('#fb i')];
 let chompStart=0,chompUntil=0,gs=1,fight=null,endD=10000,bonus=false,pend=false,bc=0,bub=[],cheer=false,coins=0,sub='',lev=1,ban=0,bt='',gone=false,fl=0,hyd=5,lastK=0,bx,vx,dist,items,nextS,score,g,run,over,best=0,fx=[],pop=0,shake=0,ac,chewBuf=null;
 const $=id=>document.getElementById(id);
 function msg(t){$('msg').textContent=t}
@@ -88,7 +90,7 @@ function step(){
   if(!over&&(bx-r<TL||bx+r>TR))die('Off the track!');
   const k=Math.floor(dist/1000);if(k>lastK){if(!bonus)hyd-=k-lastK;lastK=k;if(hyd<=0&&!over)die('Dehydrated!')}
   $('d').textContent=Math.min(endD/10,Math.floor(dist/10));if(dist>=endD&&!over)win()}
- HS.forEach((e,i)=>e.classList.toggle('on',i<hyd));
+ HS.forEach((e,i)=>e.classList.toggle('on',i<hyd));FS.forEach((e,i)=>{e.classList.toggle('on',i<g);e.classList.toggle('hot',i<g&&i>=8)});
  draw();requestAnimationFrame(step)}
 const ren=new THREE.WebGLRenderer({canvas:c,antialias:true});ren.setPixelRatio(Math.min(devicePixelRatio||1,2));ren.setSize(W,W,false);
 const sc=new THREE.Scene();sc.background=new THREE.Color(0x9fd6ff);sc.fog=new THREE.Fog(0x9fd6ff,14,38);
